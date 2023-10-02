@@ -1,0 +1,41 @@
+type Agricultor {
+  id: ID! 
+  idusuario: Int!
+  nome: String!
+  sobrenome: String!
+  datanascimento: String
+  sexo: String
+  endereco: String
+  cidade: String
+  estado: String
+  cep: String
+  cpf: String
+  telefone: String
+  email: String
+}
+
+ type Query {
+  agricultores: [Agricultor]
+  agricultor(id: ID!): Agricultor
+}
+
+type Mutation {
+  criarAgricultor(input: AgricultorInput): Agricultor
+  atualizarAgricultor(id: ID!, input: AgricultorInput): Agricultor
+  excluirAgricultor(id: ID!): Agricultor
+}
+
+input AgricultorInput {
+  idusuario: Int!
+  nome: String!
+  sobrenome: String!
+  datanascimento: String
+  sexo: String
+  endereco: String
+  cidade: String
+  estado: String
+  cep: String
+  cpf: String
+  telefone: String
+  email: String
+}

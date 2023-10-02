@@ -1,0 +1,23 @@
+type DadosClimaticos {
+    id: ID!
+    titulo: String!
+    tipodado: String!
+    data: String!
+}
+
+type Query {
+    dadosclimaticos: [DadosClimaticos]
+    dadosclimatico(id: ID!): DadosClimaticos
+}
+
+type Mutation {
+    criarDadosClimaticos(input: DadosClimaticosInput): DadosClimaticos
+    atualizarDadosClimaticos(id: ID!, input: DadosClimaticosInput): DadosClimaticos
+    excluirDadosClimaticos(id: ID!): DadosClimaticos
+}
+
+input DadosClimaticosInput {
+    titulo: String!
+    tipodado: String!
+    data: String!
+}

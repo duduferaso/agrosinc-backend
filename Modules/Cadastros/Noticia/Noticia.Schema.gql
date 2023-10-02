@@ -1,0 +1,23 @@
+type NoticiaSemana {
+    id: ID!
+    titulo: String!
+    conteudo: String!
+    data_publicacao: String
+}
+
+type Query {
+    noticiasemana: [NoticiaSemana]
+    noticianasemana(id: ID!): NoticiaSemana
+}
+
+type Mutation {
+    criarNoticiaSemana(input: NoticiaSemanaInput): NoticiaSemana
+    atualizarNoticiaSemana(id: ID!, input: NoticiaSemanaInput): NoticiaSemana
+    excluirNoticiaSemana(id: ID!): NoticiaSemana
+}
+
+input NoticiaSemanaInput {
+    titulo: String!
+    conteudo: String!
+    data_publicacao: String
+}

@@ -1,0 +1,23 @@
+type Area {
+    id: ID!
+    nome: String!
+    tipoarea: Boolean
+    idagricultor: ID!
+}
+
+type Query {
+    areas: [Area]
+    area(id: ID!): Area
+}
+
+type Mutation {
+    criarArea(input: AreaInput): Area
+    atualizarArea(id: ID!, input: AreaInput): Area
+    excluirArea(id: ID!): Area
+}
+
+input AreaInput {
+    nome: String!
+    tipoarea: Boolean
+    idagricultor: ID!
+}

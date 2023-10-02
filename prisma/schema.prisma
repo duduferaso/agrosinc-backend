@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model agricultor {
+  id             Int       @id(map: "pk_agricultor_id") @default(autoincrement())
+  idusuario      Int
+  nome           String    @db.VarChar
+  sobrenome      String    @db.VarChar
+  datanascimento DateTime? @db.Timestamp(6)
+  sexo           String?   @db.VarChar
+  endereco       String?   @db.VarChar
+  cidade         String?   @db.VarChar
+  estado         String?   @db.VarChar
+  cep            String?   @db.VarChar
+  cpf            String?   @db.VarChar
+  telefone       String?   @db.VarChar
+  email          String?   @db.VarChar
+  usuario        usuario   @relation(fields: [idusuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "agricultor_fk")
+}
+
+model area {
+  id           Int           @id(map: "pk_area_id") @default(autoincrement())
+  nome         String        @db.VarChar
+  tipoarea     Boolean?
+  idagricultor Int
+  areagado     areagado[]
+  areaplantio  areaplantio[]
+  localizacao  localizacao[]
+}
+
+model areagado {
+  id        Int      @id(map: "pk_areagado_id") @default(autoincrement())
+  nome      String   @db.VarChar
+  idarea    Int
+  areatotal Decimal  @db.Decimal
+  areautil  Decimal? @db.Decimal
+  area      area     @relation(fields: [idarea], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "areagado_fk")
+  gado      gado[]
+}
+
+model areaplantio {
+  id                Int                 @id(map: "pk_areaplantio_id") @default(autoincrement())
+  areatotal         Decimal             @db.Decimal
+  areaadubada       Decimal             @db.Decimal
+  areautil          Decimal             @db.Decimal
+  idarea            Int
+  area              area                @relation(fields: [idarea], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "areaplantio_fk")
+  historicocolheita historicocolheita[]
+}
+
+model cultura {
+  id                  Int                   @id(map: "pk_cultura_id") @default(autoincrement())
+  nome                String                @db.VarChar
+  historicocolheita   historicocolheita[]
+  planejamentocultura planejamentocultura[]
+}
+
+model dadosclimaticos {
+  id       Int      @id(map: "pk_dadosclimaticos_id") @default(autoincrement())
+  titulo   String   @db.VarChar
+  tipodado String   @db.VarChar
+  data     DateTime @db.Timestamp(6)
+}
+
+model gado {
+  id            Int           @id(map: "pk_gado_id") @default(autoincrement())
+  idcabeca      Int
+  quantidade    Decimal?      @db.Decimal
+  idareagado    Int?
+  areagado      areagado?     @relation(fields: [idareagado], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "gad2o_fk")
+  gadodescricao gadodescricao @relation(fields: [idcabeca], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "gado_fk")
+}
+
+model gadodescricao {
+  id          Int      @id(map: "pk_gadodescricao_id") @default(autoincrement())
+  tipo        String   @db.VarChar
+  descricao   String?  @db.VarChar
+  sexo        String?  @db.VarChar
+  custoinsumo Decimal? @db.Decimal
+  gado        gado[]
+}
+
+model historicocolheita {
+  id           Int         @id(map: "pk_historicocolheita_id") @default(autoincrement())
+  dataplantio  DateTime?   @db.Timestamp(6)
+  datacolheita DateTime?   @db.Timestamp(6)
+  rendimento   Decimal?    @db.Decimal
+  idplantio    Int
+  idcultura    Int
+  cultura      cultura     @relation(fields: [idcultura], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "historicocolheit2a_fk")
+  areaplantio  areaplantio @relation(fields: [idplantio], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "historicocolheita_fk")
+}
+
+model localizacao {
+  id        Int    @id(map: "pk_localizacao_id") @default(autoincrement())
+  latitude  String @db.VarChar
+  longitude String @db.VarChar
+  idarea    Int
+  area      area   @relation(fields: [idarea], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "localizacao_fk")
+}
+
+model noticiasemana {
+  id       Int      @id(map: "pk_noticiasemana_id") @default(autoincrement())
+  titulo   String   @db.VarChar
+  conteudo String   @db.VarChar
+  data     DateTime @db.Timestamp(6)
+}
+
+model planejamentocultura {
+  id               Int      @id(map: "pk_planejamentocultura_id") @default(autoincrement())
+  dataplanejamento DateTime @db.Timestamp(6)
+  recomendacoes    String   @db.VarChar
+  idcultura        Int?
+  cultura          cultura? @relation(fields: [idcultura], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "planejamentocultura_fk")
+}
+
+model usuario {
+  id         Int          @id(map: "pk_usuario_id") @default(autoincrement())
+  nome       String       @db.VarChar
+  senha      String       @db.VarChar
+  agricultor agricultor[]
+}
